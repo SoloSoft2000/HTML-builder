@@ -2,12 +2,14 @@ const path = require('path');
 const fs = require('fs');
 
 fs.readdir(path.join(__dirname, 'secret-folder'), {withFileTypes: true}, (error, dirList) => {
-  if (!error) {
-    dirList.forEach((item) => {
-      if (item.isFile()) {
+  dirList.forEach((item) => {
+    const pathItem = path.join(__dirname, 'secret-folder', item.name);
+    fs.stat(pathItem, (err, stats) => {
+      if(!stats.isDirectory()) {
         const extName = path.extname(item.name);
-        console.log(path.basename(item.name, extName), extName);
+        const fileName = path.basename(item.name, extName);
+        console.log(`${fileName} - ${extName.slice(1)} - ${stats.size}b`);
       }
     });
-  }
+  });
 });
