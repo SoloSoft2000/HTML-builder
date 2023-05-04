@@ -1,5 +1,5 @@
 const fsPromises = require('node:fs/promises');
-//const fs = require('node:fs');
+const fs = require('node:fs');
 const path = require('node:path');
 const mergeCss = require('./mergeCss.js');
 const copyDir = require('./copyDir.js');
@@ -11,7 +11,8 @@ async function changeTemplate(array, htmlText) {
     const txt = await fsPromises.readFile(path.join(__dirname, 'components', `${template[1]}.html`));
     htmlText = htmlText.replace(template[0], txt.toString());
   }
-  console.log(htmlText);
+  const stream =  new fs.WriteStream(path.join(__dirname, distPath, 'index.html'));
+  stream.write(htmlText);
 }
 
 
