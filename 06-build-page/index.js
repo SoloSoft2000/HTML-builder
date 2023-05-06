@@ -3,23 +3,23 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const copyDir = (pathFrom, pathTo) => {
-  fsPromises.rm(pathTo, {force: true, recursive: true}).then(() => {
-    fs.mkdir(pathTo, { recursive: true }, (err) => {
-      if (err) throw err;
-      fs.readdir(pathFrom, {withFileTypes: true}, (error, dirList) => {
-        dirList.forEach((fileName) => {
-          if(fileName.isDirectory()) {
-            copyDir(path.join(pathFrom, fileName.name), path.join(pathTo, fileName.name));
+  fsPromises.rm(pathTo, {force: true, recursive: true})
+  .then(() => {
+    fsPromises.mkdir(pathTo, { recursive: true })
+    .then(() => {
+      fsPromises.readdir(pathFrom, {withFileTypes: true})
+      .then((dirList) => {
+        for (const item of dirList) {
+          if (item.isDirectory()) {
+            copyDir(path.join(pathFrom, item.name), path.join(pathTo, item.name));
           } else {
-            fs.copyFile(path.join(pathFrom, fileName.name), path.join(pathTo, fileName.name), (err) => {
-              if (err) throw err;
-            });
+            fsPromises.copyFile(path.join(pathFrom, item.name), path.join(pathTo, item.name));
           }
-        });
-      });
-    });
-  });
-};
+        }
+      })
+    })
+  })
+}
 
 const mergeCss = (distPath, distName) => {
   const pathToBundle = path.join(__dirname, distPath, distName);
