@@ -1,10 +1,6 @@
-const path = require('path');
-const fs = require('fs');
+const path = require('node:path')
+const fs = require('node:fs');
 
-const stream = new fs.ReadStream(path.join(__dirname, 'text.txt'));
+const stream = new fs.createReadStream(path.join(__dirname, 'text.txt'));
 
-stream.on('readable', () => {
-  const data = stream.read();
-  if (data)
-    process.stdout.write(data);
-});
+stream.on('data', (data) => process.stdout.write(data));

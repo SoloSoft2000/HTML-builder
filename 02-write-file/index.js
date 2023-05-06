@@ -1,7 +1,7 @@
-const path = require('path');
-const fs = require('fs');
+const path = require('node:path');
+const fs = require('node:fs');
 
-const stream =  new fs.WriteStream(path.join(__dirname, 'text.txt'));
+const stream =  new fs.createWriteStream(path.join(__dirname, 'text.txt'));
 
 process.stdout.write('What you say: > ');
 
