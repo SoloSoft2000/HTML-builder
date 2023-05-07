@@ -16,6 +16,5 @@ process.stdin.on('data', (data) => {
 process.on('SIGINT', process.exit);
 
 process.on('exit', () => {
-  stream.write('\n');
   process.stdout.write('Thank you, Buy');
 });
